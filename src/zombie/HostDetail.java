@@ -1,5 +1,6 @@
 package zombie;
 import java.net.InetAddress;
+import java.io.*;
 import java.net.UnknownHostException;
 public class HostDetail {
 	
@@ -17,15 +18,25 @@ public class HostDetail {
 		osArch = System.getProperty("osArch");
 		
 		if(os.toUpperCase()!="WINDOWS"){
-			//upTime = Tool.runCmd('uptime');
+			try{
+				upTime = Helper.captureCmdResult("uptime");
+			}
+			catch (Exception e){
+				e.printStackTrace();
+			}
 		}
 		else{
-			//upTime = Tool.rundCmd("net stats srv");
+			try{
+				upTime = Helper.captureCmdResult("net stats srv");
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		try{
 			getHostName();
 			getIPAddress();
-			
+			getMacAddress();
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -49,5 +60,10 @@ public class HostDetail {
 				}
 			}
 		}
+	}
+	
+	private void getMacAddress() throws IOException{
+		if(osVersion.toUpperCase()!="WINDOWS")
+			macAddress = Helper.captureCmdResult("ifconfig -a | grep ether").split("ether")[1];
 	}
 }
