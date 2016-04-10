@@ -13,7 +13,7 @@ public class Helper {
 		Process p = Runtime.getRuntime().exec(commands);
 		BufferedReader bf = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		while((s=bf.readLine())!=null){
-			result+=s;
+			result+=s+"\n";
 		}
 		bf.close();
 		return result;
